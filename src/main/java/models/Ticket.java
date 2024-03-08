@@ -19,8 +19,9 @@ public class Ticket {
     private LocalDateTime createdAt;
     private String description;
     private User creator;
-    private List<User> assignedUsers ;
+    private List<User> assignedUsers;
     private List <Tag> tags;
+    private Project project;
     
 
     public Ticket() {
@@ -39,19 +40,24 @@ public class Ticket {
         return this.id;
     }
 
-    @ManyToOne()
+    @ManyToOne
     public User getCreator() {
         return this.creator;
     }
 
-    @ManyToMany()
+    @ManyToMany
     public List<User> getAssignedUsers() {
         return this.assignedUsers;
     }
 
-    @ManyToMany()
+    @ManyToMany
     public List<Tag> getTags() {
         return this.tags;
+    }
+
+    @ManyToOne
+    public Project getProject() {
+        return this.project;
     }
 
     public String getTitle() {
@@ -99,6 +105,10 @@ public class Ticket {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
    
     @Override
