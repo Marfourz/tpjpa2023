@@ -54,12 +54,10 @@ public class Message {
         this.id = id;
     }
 
-   
 
     public void setDiscussion(Discussion discussion) {
         this.discussion = discussion;
     }
-
    
     public void setUser(User user) {
         this.user = user;

@@ -25,7 +25,6 @@ public class Discussion {
         this.id = id;
         this.messages = messages;
         this.ticket = ticket;
-
     }
 
 

@@ -21,6 +21,7 @@ public class Ticket {
     private User creator;
     private List<User> assignedUsers ;
     private List <Tag> tags;
+    private Project project;
     
 
     public Ticket() {
@@ -39,20 +40,31 @@ public class Ticket {
         return this.id;
     }
 
-    @ManyToOne()
+    @ManyToOne
     public User getCreator() {
         return this.creator;
     }
 
-    @ManyToMany()
+    @ManyToMany
     public List<User> getAssignedUsers() {
         return this.assignedUsers;
     }
 
-    @ManyToMany()
+    @ManyToMany
     public List<Tag> getTags() {
         return this.tags;
     }
+
+
+    @ManyToOne
+    public Project getProject() {
+        return this.project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
 
     public String getTitle() {
         return this.title;
