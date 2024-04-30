@@ -1,8 +1,0 @@
-jpa\JpaTest.class
-models\Discussion.class
-models\Tag.class
-models\User.class
-models\Role.class
-models\Ticket.class
-models\Message.class
-jpa\EntityManagerHelper.class

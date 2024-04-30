@@ -1,11 +1,12 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.*;
 
 @Entity()
-public class Project {
+public class Project implements Serializable {
     
     private Long id;
 
@@ -34,9 +35,7 @@ public class Project {
     public List<Ticket> getTickets() {
         return this.tickets;
     }
-
-
-
+ 
     public void setId(Long id) {
         this.id = id;
     }
@@ -49,6 +48,8 @@ public class Project {
         this.name = name;
     }
 
+    @Lob 
+    @Column(name="description", length=512)
     public String getDescription() {
         return this.description;
     }

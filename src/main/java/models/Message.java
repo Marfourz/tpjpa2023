@@ -1,5 +1,7 @@
 package models;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class Message {
+public class Message implements Serializable{
 
     private Long id;
     private String message;
@@ -63,6 +65,17 @@ public class Message {
         this.user = user;
     }
     
+
+
+    @Override
+    public String toString() {
+        return "{" +
+            " id='" + getId() + "'" +
+            ", message='" + getMessage() + "'" +
+            ", discussion='" + getDiscussion() + "'" +
+            ", user='" + getUser() + "'" +
+            "}";
+    }
 
 
 

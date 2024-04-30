@@ -1,20 +1,36 @@
 package models;
 
 
+import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Internal;
+
+import models.enums.Role;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 
 @Entity
-public class User {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(
+    name = "isSupport"
+)
+public class  User implements Serializable {
     private Long id;
     private String username;
     private String firstname;
@@ -29,14 +45,19 @@ public class User {
 
     public User() {}
 
-    public User(Long id, String username, String firstname, String lastname, Role role, List<Ticket> ticketsCreated, List<Ticket> ticketsAffected) {
+    public User(Long id, String username, String firstname, String lastname, Role role) {
         this.id = id;
         this.username = username;
         this.firstname = firstname;
         this.lastname = lastname;
         this.role = role;
-        this.ticketsCreated = ticketsCreated;
-        this.ticketsAffected = ticketsAffected;
+    }
+
+    public User(String username, String firstname, String lastname, Role role) {
+        this.username = username;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.role = role;
     }
 
 
@@ -47,7 +68,7 @@ public class User {
         return id;
     }
 
-    @OneToMany(mappedBy = "creator", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "creator")
     public List<Ticket> getTicketsCreated() {
         return this.ticketsCreated;
     }
@@ -57,7 +78,7 @@ public class User {
         return this.ticketsAffected;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Message> getMessages() {
         return this.messages;
     }
@@ -76,7 +97,8 @@ public class User {
     }
 
 
-    @ManyToOne()
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'SIMPLE'")
     public Role getRole() {
         return role;
     }

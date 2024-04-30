@@ -1,0 +1,12 @@
+jpa\JpaTest.class
+dao\DiscussionDao.class
+servlet\UserInfo.class
+dao\generic\IGenericDao.class
+models\enums\Role.class
+servlet\MyServlet.class
+models\enums\TicketState.class
+dao\generic\AbstractJpaDao.class
+dao\generic\EntityManagerHelper.class
+jpa\EntityManagerHelper.class
+jpa\IGenericDao.class
+jpa\AbstractJpaDao.class

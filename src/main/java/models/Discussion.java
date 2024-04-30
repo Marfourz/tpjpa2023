@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -10,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 
 @Entity
-public class Discussion {
+public class Discussion implements Serializable {
 
     private Long id;
 
@@ -21,9 +22,7 @@ public class Discussion {
     public Discussion() {
     }
 
-    public Discussion(Long id, List<Message> messages, Ticket ticket) {
-        this.id = id;
-        this.messages = messages;
+    public Discussion(Ticket ticket) {
         this.ticket = ticket;
     }
 

@@ -1,38 +1,71 @@
 package models;
 
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
+import models.enums.TicketState;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 
 @Entity
-public class Ticket {
+public class Ticket implements Serializable{
 
     private Long id;
     private String title;
-    private LocalDateTime createdAt;
+    private Date createdAt;
     private String description;
+
     private User creator;
     private List<User> assignedUsers ;
     private List <Tag> tags;
     private Project project;
+    private List<Discussion> discussions;
+    private TicketState state;
+
+   
+    
     
 
     public Ticket() {
+
     }
 
-    public Ticket(Long id, String title, LocalDateTime createdAt, String description) {
-        this.id = id;
+   
+
+    public Ticket(String title, String description, User creator, List<User> assignedUsers, List<Tag> tags, Project project) {
         this.title = title;
-        this.createdAt = createdAt;
         this.description = description;
+        this.creator = creator;
+        this.assignedUsers = assignedUsers;
+        this.tags = tags;
+        this.project = project;
     }
+
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date(); 
+        
+        if (state == null) {
+            state = TicketState.OPEN;
+        }
+    }
+
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -40,7 +73,7 @@ public class Ticket {
         return this.id;
     }
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     public User getCreator() {
         return this.creator;
     }
@@ -60,6 +93,12 @@ public class Ticket {
     public Project getProject() {
         return this.project;
     }
+
+    @OneToMany(mappedBy = "ticket", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    public List<Discussion> getDiscussions(){
+        return discussions;
+    }
+
 
     public void setProject(Project project) {
         this.project = project;
@@ -99,11 +138,12 @@ public class Ticket {
         this.title = title;
     }
 
-    public LocalDateTime getCreatedAt() {
+    @Temporal(TemporalType.TIMESTAMP)
+    public Date getCreatedAt() {
         return this.createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
@@ -112,6 +152,28 @@ public class Ticket {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+
+    public void setDiscussions(List<Discussion> discussions){
+        this.discussions = discussions;
+    }
+
+    public void addDiscussions(Discussion discussion){
+        this.discussions.add(discussion);
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'OPEN'")
+    public TicketState getState() {
+        return this.state;
+    }
+
+
+    public void setState(TicketState state) {
+        this.state = state;
+    }
+
    
     @Override
     public String toString() {

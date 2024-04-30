@@ -1,6 +1,7 @@
 package models;
 
-import javax.annotation.processing.Generated;
+import java.io.Serializable;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,11 +9,20 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Tag {
+public class Tag implements Serializable {
 
     private Long id;
     private String code;
     private String label;
+    private String color;
+
+    public String getColor() {
+        return this.color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 
 
     public Tag() {
